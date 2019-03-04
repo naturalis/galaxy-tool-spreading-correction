@@ -49,13 +49,6 @@ column = args.column[0]
 idx_in_id = args.idx_in_id[0]
 delim_idx = args.delim_idx[0]
 
-if args.conditional_spreading_input:
-    print(str(args.conditional_spreading_input))
-else:
-    print("no value")
-
-print('Reading file: {}'.format(filename))
-
 # Load in count table
 df = pd.read_csv(filename, index_col=idx, sep=separator)
 # Transform the data frame if each column represents a cell
@@ -82,7 +75,7 @@ if (df_noindex.shape[0] != n_rows*n_cols):
 
 base = os.path.splitext(os.path.basename(filename))[0]
 
-print('Estimating spreading from {}'.format(filename))
+#print('Estimating spreading from {}'.format(filename))
 
 # Get genes to estimate the rate of spreading and fraction of contaminating reads.
 names_list = []
@@ -164,24 +157,22 @@ else:
     rate_log = 'Found no genes with bias along the column and row combination'
     ols_log = 'Found no genes with bias along the column and row combination'
 
-print('Saving figure from analysis to {}'.format('{}_figures.pdf'.format(args.output_folder+base)))
+#print('Saving figure from analysis to {}'.format('{}_figures.pdf'.format(args.output_folder+base)))
 plt.tight_layout()
 plt.savefig('{}_figures.pdf'.format(args.output_folder+base))
 
-print('Saving log file from analysis to {}'.format('{}_unspread.log'.format(args.output_folder+base)))
+#print('Saving log file from analysis to {}'.format('{}_unspread.log'.format(args.output_folder+base)))
 
 if np.sum(mt) != 0:
     with open('{}_unspread.log'.format(args.output_folder+base), "w") as log_file:
         #print('# {}\n# {}\n# {}\n# {}\n{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(filename, bias_log, rate_log, ols_log, filename, np.sum(mt), len(mt), np.round(rate_spreading,7), np.round(model.params['true'],7), np.round(model.rsquared,7), true_median), file=log_file)
-        print('# {}\n# {}\n# {}\n# {}\n{}\t{}\t{}\t{}\t{}\t{}'.format(filename, bias_log, rate_log, ols_log, filename, np.sum(mt), len(mt), np.round(rate_spreading,7), np.round(model.params['true'],7), true_median), file=log_file)
+        print('\n# {}\n# {}\n# {}\t{}\t{}\t{}\t{}\t{}'.format(bias_log, rate_log, ols_log, np.sum(mt), len(mt), np.round(rate_spreading,7), np.round(model.params['true'],7), true_median), file=log_file)
 else:
     with open('{}_unspread.log'.format(args.output_folder+base), "w") as log_file:
-        print('# {}\n# {}\n# {}\n# {}\n{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(filename, bias_log, rate_log, ols_log, filename, np.sum(mt), len(mt), 'NaN', 'NaN', 'NaN', 'Nan'), file=log_file)
+        print('\n# {}\n# {}\n# {}\t{}\t{}\t{}\t{}\t{}\t{}'.format(bias_log, rate_log, ols_log, np.sum(mt), len(mt), 'NaN', 'NaN', 'NaN', 'Nan'), file=log_file)
 
 # You can set the threshold yourself
-print(str(model.params['true'])+" < modelparamtrue")
 if np.sum(mt) == 0 or model.params['true'] < threshold:
-    print(str(model.params['true'])+" < modelparamtrue")
     print('The experiment shows no or an acceptable amount of spreading, correction is not neccessary. Exiting...')
     quit()
 
@@ -225,6 +216,6 @@ df_adj = pd.DataFrame(data=adj_list, index = df_noindex.columns.values, columns=
 
 df_adj = pd.concat([df[i7_index_name], df[i5_index_name] , df_adj], axis = 1)
 
-print('Saving correction to {}'.format('{}_corrected.csv'.format(args.output_folder+base)))
+#print('Saving correction to {}'.format('{}_corrected.csv'.format(args.output_folder+base)))
 
 df_adj.to_csv('{}_corrected.csv'.format(args.output_folder+base))

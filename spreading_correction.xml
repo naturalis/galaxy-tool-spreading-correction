@@ -7,7 +7,7 @@ $input_nexterasheet
 $output_log
 $output_pdf
 $output_csv
-
+$conditional_spreading_rate.conditional_spreading
 #if $conditional_spreading_rate.conditional_spreading
 $conditional_spreading_rate.input_rows
 $conditional_spreading_rate.input_cols
@@ -15,6 +15,8 @@ $conditional_spreading_rate.conditional_spreading_input
 $conditional_spreading_rate.false_positives
 #end if
 #if not $conditional_spreading_rate.conditional_spreading
+$conditional_spreading_rate.input_rows
+$conditional_spreading_rate.input_cols
 $conditional_spreading_rate.highly_expressed
 $conditional_spreading_rate.false_positives
 $conditional_spreading_rate.acceptable_fraction

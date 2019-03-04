@@ -5,16 +5,15 @@
 #location for the testserver
 #outlocation=$(mktemp -d /media/GalaxyData/files/XXXXXX)
 outlocation=$(mktemp -d /home/galaxy/ExtraRef/XXXXXX)
-
 python3 /home/galaxy/Tools/Spreading-Correction/create_input.py -t $1 -n $2 -ot $outlocation"/transposed.txt" -o $outlocation"/nextera_transposed.txt"
 sed 's/\t/ /g' $outlocation"/nextera_transposed.txt" > $outlocation"/nextera_transposed_space.txt"
-
-if [ "${8}" ]
+#echo "${6}"
+if [ "${6}" == "True" ]
 then
-  unspread_manual.py $outlocation"/nextera_transposed_space.txt" --i5 'S.index.name' --i7 'N.index.name' --column 0 --sep ' ' --rows $6 --cols $7 --c $9 --conditional_spreading_input "${8}" --output_folder $outlocation"/" > $outlocation"/log.txt"
+  python3 /home/galaxy/Tools/Spreading-Correction/unspread_manual.py $outlocation"/nextera_transposed_space.txt" --i5 'S.index.name' --i7 'N.index.name' --column 0 --sep ' ' --rows $7 --cols $8 --conditional_spreading_input "${9}" --c "${10}" --output_folder $outlocation"/" > $outlocation"/log.txt"
   cat $outlocation"/log.txt" >> $outlocation"/log2.txt"
 else
-  unspread.py $outlocation"/nextera_transposed_space.txt" --i5 'S.index.name' --i7 'N.index.name' --column 0 --sep ' ' --rows $6 --cols $7 --h $8 --c $9 --t "${10}" --output_folder $outlocation"/" > $outlocation"/log.txt"
+  python3 /home/galaxy/Tools/Spreading-Correction/unspread.py $outlocation"/nextera_transposed_space.txt" --i5 'S.index.name' --i7 'N.index.name' --column 0 --sep ' ' --rows $7 --cols $8 --h $9 --c "${10}" --t "${11}" --output_folder $outlocation"/" > $outlocation"/log.txt"
   cat $outlocation"/log.txt" $outlocation"/"*".log" >> $outlocation"/log2.txt"
 fi
 
