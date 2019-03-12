@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 import os, sys,re
 import argparse
 import pandas as pd
@@ -143,15 +143,15 @@ if np.sum(mt) != 0:
     model_df = pd.DataFrame([true_counts, np.apply_along_axis(np.sum, 1,spread_counts)], index=['true', 'spread']).T
     y,X = dmatrices('spread ~  true', data = model_df, return_type='dataframe')
     model = sm.OLS(y, X).fit()
-    #ols_log = 'Estimated fraction of spread reads to be {} and variance explained R-squared = {}'.format(np.round(model.params['true'],5), np.round(model.rsquared,5))
-    ols_log = 'Estimated fraction of spread reads to be {} and variance explained R-squared = {}'.format(np.round(model.params['true'],5), 999)
-    #print(ols_log)
-
-    #ax3.scatter(np.log10(true_counts), np.log10(np.apply_along_axis(np.sum, 1,spread_counts)), s = 1)
-    #ax3.set_xlabel(r'log$_{10}$(Source counts)')
-    #ax3.set_ylabel(r'log$_{10}$(Spread counts)')
-    #ax3.text(0.3, 0.9,r'coef = {}, $R^2 = $ {}'.format(np.round(model.params['true'],5), np.round(model.rsquared,5)), ha='center', va='center', transform=ax3.transAxes)
-    #ax3.set_title('Genes highly expressed in only one cell')
+    try:
+        ols_log = 'Estimated fraction of spread reads to be {} and variance explained R-squared = {}'.format(np.round(model.params['true'],5), np.round(model.rsquared,5))
+        ax3.scatter(np.log10(true_counts), np.log10(np.apply_along_axis(np.sum, 1,spread_counts)), s = 1)
+        ax3.set_xlabel(r'log$_{10}$(Source counts)')
+        ax3.set_ylabel(r'log$_{10}$(Spread counts)')
+        ax3.text(0.3, 0.9,r'coef = {}, $R^2 = $ {}'.format(np.round(model.params['true'],5), np.round(model.rsquared,5)), ha='center', va='center', transform=ax3.transAxes)
+        ax3.set_title('Genes highly expressed in only one cell')
+    except:
+        ols_log = 'Estimated fraction of spread reads to be {} and variance explained R-squared = {}'.format(np.round(model.params['true'],5), "unavailbe")
 else:
     print('Found no genes with bias along the column and row combination')
     rate_log = 'Found no genes with bias along the column and row combination'
@@ -193,8 +193,8 @@ def adjust_reads(mat, i, column_spread = column_spread, row_spread = row_spread,
 
     matdiff = np.subtract(adjusted_reads, mat)
     matdiff[matdiff > 0] = 0
-    adjusted_reads2 = np.add(mat, matdiff)
 
+    adjusted_reads2 = np.add(mat, matdiff)
 
     #if the new matrix has a higher value, use the input value the avoid a higher abundance then the original.
     # A lower bound cutoff removes false positives (unfortunately also remove true reads with low counts in that cell)
@@ -203,6 +203,8 @@ def adjust_reads(mat, i, column_spread = column_spread, row_spread = row_spread,
     #adjusted_reads2 = mat + matdiff
 
     adjusted_reads2[adjusted_reads2 < cutoff] = 0
+    adjusted_reads2 = adjusted_reads2.astype(int)
+    print(adjusted_reads2)
     return adjusted_reads2
 
 print('Correcting spreading for each gene')
@@ -210,11 +212,10 @@ print('Correcting spreading for each gene')
 adj_list = []
 for i, col in df_noindex.items():
     adj_list.append(adjust_reads(col, i).flatten())
-
 # Put correction into a dataframe and save to a .csv file
 df_adj = pd.DataFrame(data=adj_list, index = df_noindex.columns.values, columns= df_noindex.index.values).T
-
 df_adj = pd.concat([df[i7_index_name], df[i5_index_name] , df_adj], axis = 1)
+df_adj = df_adj.round()
 
 #print('Saving correction to {}'.format('{}_corrected.csv'.format(args.output_folder+base)))
 

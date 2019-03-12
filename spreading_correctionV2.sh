@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #location for production server
-outlocation=$(mktemp -d /media/GalaxyData/database/files/XXXXXX)
+#outlocation=$(mktemp -d /media/GalaxyData/database/files/XXXXXX)
 #location for the testserver
 #outlocation=$(mktemp -d /media/GalaxyData/files/XXXXXX)
-#outlocation=$(mktemp -d /home/galaxy/ExtraRef/XXXXXX)
+outlocation=$(mktemp -d /home/galaxy/ExtraRef/XXXXXX)
 create_input.py -t $1 -n $2 -ot $outlocation"/transposed.txt" -o $outlocation"/nextera_transposed.txt"
 sed 's/\t/ /g' $outlocation"/nextera_transposed.txt" > $outlocation"/nextera_transposed_space.txt"
 #echo "${6}"

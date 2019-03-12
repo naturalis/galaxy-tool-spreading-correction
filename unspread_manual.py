@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 import os, sys,re
 import argparse
 import pandas as pd
@@ -85,6 +85,7 @@ def adjust_reads(mat, i, column_spread = column_spread, row_spread = row_spread,
     matdiff = np.subtract(adjusted_reads, mat)
     matdiff[matdiff > 0] = 0
     adjusted_reads2 = np.add(mat, matdiff)
+    adjusted_reads2 = adjusted_reads2.astype(int)
     adjusted_reads2[adjusted_reads2 < cutoff] = 0
 
     return adjusted_reads2
