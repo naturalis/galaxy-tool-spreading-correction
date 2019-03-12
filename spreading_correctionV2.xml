@@ -1,0 +1,72 @@
+<tool id="spreading-CorrectionV2" name="Correct spreading V2">
+<description></description>
+<command interpreter="bash">
+spreading_correctionV2.sh
+$input_otutable
+$input_nexterasheet
+$output_log
+$output_pdf
+$output_csv
+$conditional_spreading_rate.conditional_spreading
+#if $conditional_spreading_rate.conditional_spreading
+$conditional_spreading_rate.input_rows
+$conditional_spreading_rate.input_cols
+$conditional_spreading_rate.conditional_spreading_input
+$conditional_spreading_rate.false_positives
+#end if
+#if not $conditional_spreading_rate.conditional_spreading
+$conditional_spreading_rate.input_rows
+$conditional_spreading_rate.input_cols
+$conditional_spreading_rate.highly_expressed
+$conditional_spreading_rate.false_positives
+$conditional_spreading_rate.acceptable_fraction
+#end if
+</command>
+<macros>
+	<macro name="conditional_spreading_input_manual_macro">
+		<param name="input_rows" type="integer" label="Number of rows" value="16"/>
+		<param name="input_cols" type="integer" label="Number of cols" value="24"/>
+		<param name="conditional_spreading_input" type="float" label="Rate of spreading" value="0.000000000000000"/>
+		<param name="false_positives" type="integer" label="Cutoff to remove addition false positives (default: 5)" value="5"/>
+	</macro>
+	<macro name="conditional_spreading_input_params_macro">
+		<param name="input_rows" type="integer" label="Number of rows" value="16"/>
+		<param name="input_cols" type="integer" label="Number of cols" value="24"/>
+		<param name="highly_expressed" type="integer" label="The number of reads to use to be considered highly expressed in only one cell (default: 30)" value="30"/>
+		<param name="false_positives" type="integer" label="Cutoff to remove addition false positives (default: 5)" value="5"/>
+		<param name="acceptable_fraction" type="float" label="Threshold for acceptable fraction of spread counts" value="0.0"/>
+	</macro>
+</macros>
+
+<inputs>
+	<param format="text" name="input_otutable" type="data" label="Otu table"/>
+	<param format="text" name="input_nexterasheet" type="data" label="Nextera sheet"/>
+
+<conditional name="conditional_spreading_rate">
+	<param name="conditional_spreading" type="boolean" label="Manual spreading rate" checked="no" truevalue="yes" falsevalue="no"/>
+	<when value="yes">
+		<expand macro="conditional_spreading_input_manual_macro"/>
+	</when>
+	<when value="no">
+		<expand macro="conditional_spreading_input_params_macro"/>
+	</when>
+</conditional>
+
+</inputs>
+
+<outputs>
+	<data format="txt" name="output_log" label="$input_otutable.display_name spreading correction log" />
+	<data format="pdf" name="output_pdf" label="$input_otutable.display_name spreading correction pdf" />
+	<data format="txt" name="output_csv" label="$input_otutable.display_name spreading correction csv" />
+</outputs>
+
+<tests>
+<test>
+<param name="test_input" value="test_input.txt"/>
+<output name="test_outout" file="test_output.txt"/>
+</test>
+</tests>
+<help>
+spreading correction
+</help>
+</tool>
