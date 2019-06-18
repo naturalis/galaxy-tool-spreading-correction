@@ -9,7 +9,6 @@ cd /home/galaxy/Tools
 ```
 sudo git clone https://github.com/naturalis/galaxy-tool-spreading-correction
 ```
-```
 Create the conda environment
 ```
 conda env create -f make_otu_table_environment.yml
