@@ -7,7 +7,7 @@ Installing the tool for use in Galaxy
 cd /home/galaxy/Tools
 ```
 ```
-sudo git clone https://github.com/naturalis/galaxy-tool-spreading-correction
+git clone https://github.com/naturalis/galaxy-tool-spreading-correction
 ```
 Create the conda environment
 ```
