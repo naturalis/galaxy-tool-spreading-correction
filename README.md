@@ -15,7 +15,7 @@ conda env create -f environment.yml
 ```
 Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
 ```
-<tool file="identify/spreading_correction.xml" />
+<tool file="/home/galaxy/Tools/galaxy-tool-spreading-correction/spreading_correctionV2.xml" />
 ```
 Restart Galaxy to see the tool in the menu
 
