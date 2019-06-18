@@ -80,12 +80,10 @@ base = os.path.splitext(os.path.basename(filename))[0]
 # Get genes to estimate the rate of spreading and fraction of contaminating reads.
 names_list = []
 for i, col in df_noindex.items():
-    #print(str(num_counts(col, high)))
     if num_counts(col, high) == 1:
         names_list.append(i)
 
 n_names = len(names_list)
-#print(str(n_names))
 if n_names == 0:
     print('Found no genes useable to estimate spreading, exiting...')
     quit()
@@ -204,7 +202,7 @@ def adjust_reads(mat, i, column_spread = column_spread, row_spread = row_spread,
 
     adjusted_reads2[adjusted_reads2 < cutoff] = 0
     adjusted_reads2 = adjusted_reads2.astype(int)
-    print(adjusted_reads2)
+    #print(adjusted_reads2)
     return adjusted_reads2
 
 print('Correcting spreading for each gene')
