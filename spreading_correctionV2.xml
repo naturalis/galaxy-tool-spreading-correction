@@ -1,7 +1,7 @@
 <tool id="spreading-CorrectionV2" name="Correct spreading V2">
 <description></description>
     <requirements>
-        <requirement type="package" version="1.0.0">__spreadingcorrectionenv@1.0.0</requirement>
+        <requirement type="package" version="1.0.0">spreadingcorrectionenv</requirement>
     </requirements>
 <command>
 <![CDATA[
