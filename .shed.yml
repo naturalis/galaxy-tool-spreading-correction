@@ -1,0 +1,13 @@
+name: naturalis_spreading_correction
+owner:  luka
+description: "galaxy wrapper for spreading-correction" 
+long_description: |
+  "galaxy wrapper for spreading-correction".
+remote_repository_url: https://github.com/naturalis/galaxy-tool-spreading-correction.git
+homepage_url: https://github.com/naturalis/galaxy-tool-spreading-correction.git
+type: unrestricted
+categories:
+   - Sequence Analysis
+auto_tool_repositories:
+  name_template: naturalis_spreading_correction
+  description_template: naturalis_spreading_correction
